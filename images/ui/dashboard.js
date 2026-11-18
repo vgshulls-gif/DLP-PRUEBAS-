@@ -149,7 +149,7 @@
       $('dvStorageBar').style.width=bytes>0?'100%':'0%';
       $('dvStorageBar').parentElement.title='Espacio utilizado en Google Drive';
       setText('dvStorageFree','Libre: consultando…');
-      fetch('/drive/storage',{credentials:'include'}).then(r=>r.ok?r.json():null).then(q=>{
+      if(admin())window.authHeaders(false).then(h=>fetch('/drive/storage',{headers:h})).then(r=>r.ok?r.json():null).then(q=>{
         if(!q)return;
         const used=Number(q.used_bytes||q.used||0), free=Number(q.free_bytes||q.free||0), limit=Number(q.limit_bytes||q.limit||0);
         if(used)setText('dvStorageUsed',`${formatBytes(used)} usados`);
